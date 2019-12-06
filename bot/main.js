@@ -1,1 +1,1 @@
-var MunkresJS = require("munkres-js");
+var MunkresJS = require("./munkres.js");
