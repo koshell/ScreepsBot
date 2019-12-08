@@ -45,7 +45,7 @@ function energyMiner(creep){
 
             const energyStructure = creep.room.find(FIND_MY_STRUCTURES, {
                 filter: function(object) {
-                    return object.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY);
+                    return return object.store && object.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY);
                 }
             });
 
