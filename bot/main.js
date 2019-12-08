@@ -43,9 +43,9 @@ function energyMiner(creep){
     } else {
         if (creep.store.getUsedCapacity(RESOURCE_ENERGY) != 0){
 
-            const energyStructure = creep.room.find(FIND_HOSTILE_CREEPS, {
+            const energyStructure = creep.room.find(FIND_MY_STRUCTURES, {
                 filter: function(object) {
-                    return object.store.getFreeCapacity(RESOURCE_ENERGY) => creep.store.getCapacity(RESOURCE_ENERGY);
+                    return object.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY);
                 }
             });
 
