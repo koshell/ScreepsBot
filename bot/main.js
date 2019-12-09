@@ -2,6 +2,129 @@ var MunkresJS = require("munkres");
 
 // Main Loop
 module.exports.loop = function () {
+
+// COMMAND LOOP
+
+// END COMMAND LOOP
+
+// SPAWN CREEPS
+
+
+/*
+	MOVE
+		Cost: 50
+			Decreases fatigue by 2 points per tick.
+
+	WORK
+		Cost: 100
+			Harvests 2 energy units from a source per tick.
+  			Harvests 1 resource unit from a mineral or a deposit per tick.
+  			Builds a structure for 5 energy units per tick.
+  			Repairs a structure for 100 hits per tick consuming 1 energy unit per tick.
+  			Dismantles a structure for 50 hits per tick returning 0.25 energy unit per tick.
+  			Upgrades a controller for 1 energy unit per tick.
+
+  	CARRY
+		Cost: 50
+			Can contain up to 50 resource units.
+
+  	ATTACK
+		Cost: 80
+			Attacks another creep/structure with 30 hits per tick in a short-ranged attack.
+
+  	RANGED_ATTACK
+		Cost: 150
+			Attacks another single creep/structure with 10 hits per tick in a long-range attack up to 3 squares long.
+  			Attacks all hostile creeps/structures within 3 squares range with 1-4-10 hits (depending on the range).
+
+  	HEAL
+		Cost: 250
+			Heals self or another creep restoring 12 hits per tick in short range or 4 hits per tick at a distance.
+
+  	CLAIM
+		Cost: 600
+			Claims a neutral room controller.
+  			Reserves a neutral room controller for 1 tick per body part.
+  			Attacks a hostile room controller downgrading its timer by 300 ticks per body parts.
+  			Attacks a neutral room controller reservation timer by 1 tick per body parts.
+  			A creep with this body part will have a reduced life time of 600 ticks and cannot be renewed.
+
+  	TOUGH
+		Cost: 10
+			No effect, just additional hit points to the creep's body. Can be boosted to resist damage.
+
+	Max of 50 body parts per creep.
+
+	Each creep has a max lifespan of 1500 game ticks.
+
+	Each Spawn has 300 energy units.
+
+	Each Extension has 50 energy units.
+
+	Each body part adds 100 hits to the creep.
+
+	The order in which the parts were specified during the spawning of a creep also has a bearing.
+	Under attack, the first parts to take hits are those specified first.
+	Full damage to a part leads to complete disabling of it – the creep can no longer perform this function.
+*/
+
+/*
+
+for (let step = 0; step < 5; step++) {
+  // Runs 5 times, with values of step 0 through 4.
+  console.log('Walking east one step');
+}
+
+*/
+
+function summonCreep(spawner, moveValue, workValue, carryValue, attackValue, rangedAttackValue, healValue, claimValue, toughValue){
+
+	let body = [];
+
+	for (let step = 0; step < Math.floor(toughValue/10); step++) {
+		body.push(TOUGH);
+	}
+
+	for (let step = 0; step < Math.floor(claimValue/600); step++) {
+		body.push(CLAIM);
+	}
+
+	for (let step = 0; step < Math.floor(rangedAttackValue/150); step++) {
+		body.push(RANGED_ATTACK);
+	}
+
+	for (let step = 0; step < Math.floor(attackValue/80); step++) {
+		body.push(ATTACK);
+	}
+
+	for (let step = 0; step < Math.floor(carryValue/50); step++) {
+		body.push(CARRY);
+	}
+
+	for (let step = 0; step < Math.floor(workValue/100); step++) {
+		body.push(WORK);
+	}
+
+	for (let step = 0; step < Math.floor(healValue/250); step++) {
+		body.push(HEAL);
+	}
+
+	for (let step = 0; step < Math.floor(moveValue/50); step++) {
+		body.push(MOVE);
+	}
+
+	Game.spawns[spawner].spawnCreep(body, Game.time, {
+  		energyStructures: [
+	  		Game.spawns['Spawn1'],
+	  		Game.getObjectById('anExtensionId')
+  		]
+	},{
+		memory: {job: 'unemployed'}
+	});
+}
+// END SPAWN CREEPS
+
+// JOB LOOP
     for (const i in Game.creeps) {
         if (Game.creeps[i].memory.mining == true){
             energyMiner(Game.creeps[i]);
@@ -21,6 +144,7 @@ module.exports.loop = function () {
             }
         }
     }
+// END JOB LOOP
 }
 
 function checkGameState(){
