@@ -118,10 +118,11 @@ function summonCreep(spawner, moveValue, workValue, carryValue, attackValue, ran
 	  		Game.spawns['Spawn1'],
 	  		Game.getObjectById('anExtensionId')
   		]
-	},{
-		memory: {job: 'unemployed'}
+		, memory: {job: 'unemployed'}
 	});
 }
+
+summonCreep('Spawn1', 100, 100, 100, 0, 0, 0, 0, 0);
 // END SPAWN CREEPS
 
 // JOB LOOP
@@ -177,7 +178,14 @@ function energyMiner(creep){
                 if(creep.transfer(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(energyStructure);
                 }
-            }
+            } else {
+				if(creep.room.controller) {
+    				if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+        				creep.moveTo(creep.room.controller);
+    				}
+				}
+
+			}
 
         } else {
             creep.memory.mining = false;
@@ -194,3 +202,17 @@ function engineer(creep){
 }
 
 // END OF JOBS
+
+/*
+
+Error: This creep doesn't exist yet
+    at data (<isolated-vm>:24497:19)
+    at Object.get [as store] (eval at exports.defineGameObjectProperties (<isolated-vm>:1093:9), <anonymous>:7:62)
+    at energyMiner (main:165:19)
+    at Object.module.exports.loop (main:139:21)
+    at __mainLoop:1:52
+    at __mainLoop:2:3
+    at Object.exports.evalCode (<isolated-vm>:15817:76)
+    at Object.exports.run (<isolated-vm>:17263:24)
+
+*/
