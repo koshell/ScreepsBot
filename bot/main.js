@@ -115,7 +115,7 @@ function summonCreep(spawner, moveValue, workValue, carryValue, attackValue, ran
 
 	Game.spawns[spawner].spawnCreep(body, Game.time, {
   		energyStructures: [
-	  		Game.spawns['Spawn1'],
+	  		Game.spawns[spawner],
 	  		Game.getObjectById('anExtensionId')
   		]
 		, memory: {job: 'unemployed'}
@@ -127,26 +127,29 @@ summonCreep('Spawn1', 100, 100, 100, 0, 0, 0, 0, 0);
 
 // JOB LOOP
     for (const i in Game.creeps) {
-        if (Game.creeps[i].memory.mining == true){
-            energyMiner(Game.creeps[i]);
-        } else {
-            switch(Game.creeps[i].memory.job){
-                case 'warrior':
-                    break;
-                case 'unemployed':
-                    Game.creeps[i].memory.goingToMine = true;
-                    Game.creeps[i].memory.mining = true;
-                    energyMiner(Game.creeps[i]);
-                    break;
-                case 'text':
-                    break;
-                default:
-                    console.log(`Creep ${Game.creeps[i].name} has invalid job ${Game.creeps[i].memory.job}.`);
-            }
-        }
+		if (!Game.creeps[i].spawning) {
+			if (Game.creeps[i].memory.mining){
+	            energyMiner(Game.creeps[i]);
+	        } else {
+	            switch(Game.creeps[i].memory.job){
+	                case 'warrior':
+	                    break;
+	                case 'unemployed':
+	                    Game.creeps[i].memory.goingToMine = true;
+	                    Game.creeps[i].memory.mining = true;
+	                    energyMiner(Game.creeps[i]);
+	                    break;
+	                case 'text':
+	                    break;
+	                default:
+	                    console.log(`Creep ${Game.creeps[i].name} has invalid job ${Game.creeps[i].memory.job}.`);
+	            }
+	        }
+		}
     }
-// END JOB LOOP
 }
+
+// END JOB LOOP
 
 function checkGameState(){
     console.log("Check game state is incomplete");
@@ -198,6 +201,8 @@ function warrior(creep){
 }
 
 function engineer(creep){
+
+
     console.log("Engineer is incomplete.");
 }
 
