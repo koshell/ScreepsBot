@@ -247,3 +247,67 @@ module.exports.loop = function () {
 	    at Object.exports.run (<isolated-vm>:17263:24)
 
 */
+
+/*
+
+
+
+const variableIndex = "otherIndex";
+
+const object = {
+
+	index: "value",
+
+	[variableIndex]: "otherValue" // The index will be used from the variable. Can be any type!
+
+};
+
+​
+
+console.log(object.index, object[variableIndex])
+
+​
+
+// Note that the curly brackets on their own can also just be code blocks:
+
+{
+
+	console.log("This is a code block");
+
+}
+
+​
+
+// If you include an index it will become an object:
+
+{
+
+	index: value
+
+} // This is an object
+
+​
+
+// You can also define functions in an object without the colon and you can define indexes and values from a variable:
+
+const myVariable = "abc123";
+
+const testObject = {
+
+	myFunc() {
+
+		// Code
+
+	},
+
+	myVariable
+
+};
+
+​
+
+console.log(testObject.myVariable); // abc123
+
+
+
+*/
