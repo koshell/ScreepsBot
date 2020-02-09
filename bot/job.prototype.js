@@ -32,13 +32,13 @@ document.getElementById("demo").innerHTML = Car.hello();
 
 class Car {
   constructor(brand) {
-    this.carname = brand;
+	this.carname = brand;
   }
   get cnam() {
-    return this.carname;
+	return this.carname;
   }
   set cnam(x) {
-    this.carname = x;
+	this.carname = x;
   }
 }
 
@@ -50,20 +50,20 @@ document.getElementById("demo").innerHTML = mycar.cnam;
 
 class Car {
   constructor(brand) {
-    this.carname = brand;
+	this.carname = brand;
   }
   present() {
-    return 'I have a ' + this.carname;
+	return 'I have a ' + this.carname;
   }
 }
 
 class Model extends Car {
   constructor(brand, mod) {
-    super(brand);
-    this.model = mod;
+	super(brand);
+	this.model = mod;
   }
   show() {
-    return this.present() + ', it is a ' + this.model;
+	return this.present() + ', it is a ' + this.model;
   }
 }
 
@@ -82,11 +82,11 @@ class jobPrototype {
 		this.jobStatusAlpha = Game.creeps[creepId].memory.jobStatusAlpha;
 		this.jobStatusBeta = Game.creeps[creepId].memory.jobStatusBeta;
 		this.jobStatusGamma = Game.creeps[creepId].memory.jobStatusGamma;
-    }
+	}
 	quitJob() {
 		this.creep.memory.job = null;
 		this.creep.memory.jobId = null;
-		this.creep.memory.jobTargetAlpha = null;
+		this.creep.memory.jobTargetAlpha = null ;
 		this.creep.memory.jobTargetBeta = null;
 		this.creep.memory.jobTargetGamma = null;
 		this.creep.memory.jobStatusAlpha = null;
@@ -102,10 +102,10 @@ class jobPrototype {
 					creep.moveTo(target);
 				}
 			} else {
-				console.log(creep.name + " could find no valid source.")
+				console.log(creep.name + " could find no valid source.");
 			}
 		} else {
-			console.log(creep.name + " has no WORK body parts, can't mine.")
+			console.log(creep.name + " has no WORK body parts, can't mine.");
 		}
 	}
 
@@ -116,10 +116,10 @@ class jobPrototype {
 					creep.moveTo(sourceObject);
 				}
 			} else {
-				console.log(creep.name + " is attempting to mine invalid source.")
+				console.log(creep.name + " is attempting to mine invalid source.");
 			}
 		} else {
-			console.log(creep.name + " has no WORK body parts, can't mine.")
+			console.log(creep.name + " has no WORK body parts, can't mine.");
 		}
 	}
 

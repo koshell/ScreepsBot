@@ -20,38 +20,38 @@ function summonCreep(spawner, moveValue, workValue, carryValue, attackValue, ran
 		WORK
 			Cost: 100
 				Harvests 2 energy units from a source per tick.
-	  			Harvests 1 resource unit from a mineral or a deposit per tick.
-	  			Builds a structure for 5 energy units per tick.
-	  			Repairs a structure for 100 hits per tick consuming 1 energy unit per tick.
-	  			Dismantles a structure for 50 hits per tick returning 0.25 energy unit per tick.
-	  			Upgrades a controller for 1 energy unit per tick.
+				Harvests 1 resource unit from a mineral or a deposit per tick.
+				Builds a structure for 5 energy units per tick.
+				Repairs a structure for 100 hits per tick consuming 1 energy unit per tick.
+				Dismantles a structure for 50 hits per tick returning 0.25 energy unit per tick.
+				Upgrades a controller for 1 energy unit per tick.
 
-	  	CARRY
+		CARRY
 			Cost: 50
 				Can contain up to 50 resource units.
 
-	  	ATTACK
+		ATTACK
 			Cost: 80
 				Attacks another creep/structure with 30 hits per tick in a short-ranged attack.
 
-	  	RANGED_ATTACK
+		RANGED_ATTACK
 			Cost: 150
 				Attacks another single creep/structure with 10 hits per tick in a long-range attack up to 3 squares long.
-	  			Attacks all hostile creeps/structures within 3 squares range with 1-4-10 hits (depending on the range).
+				Attacks all hostile creeps/structures within 3 squares range with 1-4-10 hits (depending on the range).
 
-	  	HEAL
+		HEAL
 			Cost: 250
 				Heals self or another creep restoring 12 hits per tick in short range or 4 hits per tick at a distance.
 
-	  	CLAIM
+		CLAIM
 			Cost: 600
 				Claims a neutral room controller.
-	  			Reserves a neutral room controller for 1 tick per body part.
-	  			Attacks a hostile room controller downgrading its timer by 300 ticks per body parts.
-	  			Attacks a neutral room controller reservation timer by 1 tick per body parts.
-	  			A creep with this body part will have a reduced life time of 600 ticks and cannot be renewed.
+				Reserves a neutral room controller for 1 tick per body part.
+				Attacks a hostile room controller downgrading its timer by 300 ticks per body parts.
+				Attacks a neutral room controller reservation timer by 1 tick per body parts.
+				A creep with this body part will have a reduced life time of 600 ticks and cannot be renewed.
 
-	  	TOUGH
+		TOUGH
 			Cost: 10
 				No effect, just additional hit points to the creep's body. Can be boosted to resist damage.
 
@@ -114,58 +114,58 @@ function summonCreep(spawner, moveValue, workValue, carryValue, attackValue, ran
 }
 
 function checkGameState(){
-    console.log("Check game state is incomplete");
+	console.log("Check game state is incomplete");
 }
 
 // JOBS
 
 function energyMiner(creep){
-    if (creep.memory.goingToMine) {
-        const target = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-        if (target) {
-            if(creep.harvest(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-        }
-        if (creep.store.getFreeCapacity(RESOURCE_ENERGY) < 1) {
-            creep.memory.goingToMine = false;
-        }
-    } else {
-        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) != 0){
+	if (creep.memory.goingToMine) {
+		const target = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+		if (target) {
+			if(creep.harvest(target) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(target);
+			}
+		}
+		if (creep.store.getFreeCapacity(RESOURCE_ENERGY) < 1) {
+			creep.memory.goingToMine = false;
+		}
+	} else {
+		if (creep.store.getUsedCapacity(RESOURCE_ENERGY) != 0){
 
-            const energyStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                filter: function(object) {
-                    return object.store && (object.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY));
-                }
-            });
+			const energyStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+				filter: function(object) {
+					return object.store && (object.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY));
+				}
+			});
 
-            if (energyStructure) {
-                if(creep.transfer(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(energyStructure);
-                }
-            } else {
+			if (energyStructure) {
+				if(creep.transfer(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(energyStructure);
+				}
+			} else {
 				if(creep.room.controller) {
-    				if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-        				creep.moveTo(creep.room.controller);
-    				}
+					if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+						creep.moveTo(creep.room.controller);
+					}
 				}
 
 			}
 
-        } else {
-            creep.memory.mining = false;
-        }
-    }
+		} else {
+			creep.memory.mining = false;
+		}
+	}
 }
 
 function warrior(creep){
-    console.log("Warrior is incomplete.");
+	console.log("Warrior is incomplete.");
 }
 
 function engineer(creep){
 
 
-    console.log("Engineer is incomplete.");
+	console.log("Engineer is incomplete.");
 }
 
 // END JOBS
@@ -190,35 +190,35 @@ module.exports.loop = function () {
 
 // JOB LOOP
 
-    for (const i in Game.creeps) {
+	for (const i in Game.creeps) {
 		if (!Game.creeps[i].spawning) {
 			if (Game.creeps[i].memory.mining){
-	            energyMiner(Game.creeps[i]);
-	        } else {
-	            switch(Game.creeps[i].memory.job){
-	                case 'warrior':
-	                    break;
-	                case 'unemployed':
-	                    Game.creeps[i].memory.goingToMine = true;
-	                    Game.creeps[i].memory.mining = true;
-	                    energyMiner(Game.creeps[i]);
-	                    break;
-	                case 'text':
-	                    break;
-	                default:
-	                    console.log(`Creep ${Game.creeps[i].name} has invalid job ${Game.creeps[i].memory.job}.`);
-	            }
-	        }
+				energyMiner(Game.creeps[i]);
+			} else {
+				switch(Game.creeps[i].memory.job){
+					case 'warrior':
+						break;
+					case 'unemployed':
+						Game.creeps[i].memory.goingToMine = true;
+						Game.creeps[i].memory.mining = true;
+						energyMiner(Game.creeps[i]);
+						break;
+					case 'text':
+						break;
+					default:
+						console.log(`Creep ${Game.creeps[i].name} has invalid job ${Game.creeps[i].memory.job}.`);
+				}
+			}
 		}
-    }	// END JOB LOOP
+	}	// END JOB LOOP
 
 // MEMORY CLEANUP
 
-    for (let i in Memory.creeps) {
-        if (!Game.creeps[i]) {
-            delete Memory.creeps[i];
-        }
-    }
+	for (let i in Memory.creeps) {
+		if (!Game.creeps[i]) {
+			delete Memory.creeps[i];
+		}
+	}
 
 // END MEMORY CLEANUP
 
@@ -237,14 +237,14 @@ module.exports.loop = function () {
 	}
 
 	Error: This creep doesn't exist yet
-	    at data (<isolated-vm>:24497:19)
-	    at Object.get [as store] (eval at exports.defineGameObjectProperties (<isolated-vm>:1093:9), <anonymous>:7:62)
-	    at energyMiner (main:165:19)
-	    at Object.module.exports.loop (main:139:21)
-	    at __mainLoop:1:52
-	    at __mainLoop:2:3
-	    at Object.exports.evalCode (<isolated-vm>:15817:76)
-	    at Object.exports.run (<isolated-vm>:17263:24)
+		at data (<isolated-vm>:24497:19)
+		at Object.get [as store] (eval at exports.defineGameObjectProperties (<isolated-vm>:1093:9), <anonymous>:7:62)
+		at energyMiner (main:165:19)
+		at Object.module.exports.loop (main:139:21)
+		at __mainLoop:1:52
+		at __mainLoop:2:3
+		at Object.exports.evalCode (<isolated-vm>:15817:76)
+		at Object.exports.run (<isolated-vm>:17263:24)
 
 */
 
